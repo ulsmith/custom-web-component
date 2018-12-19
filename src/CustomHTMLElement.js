@@ -76,6 +76,7 @@ export default class CustomHTMLElement extends HTMLElement {
 	 * uses lit-html to actively render a DOM template and only change stuff that needs changing!
 	 */
 	update() {
+		if (!this.isConnected) return;
 		render(this.template(), this.shadowRoot ? this.shadowRoot : this.attachShadow({ mode: 'open' }) );
 	}
 }
