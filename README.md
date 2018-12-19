@@ -79,6 +79,20 @@ gulp.task('watch', ['build'], function() {
 });
 ```
 
+COMPILE WITH BABEL
+
+```bash
+# from example folder or project root
+gulp build
+```
+
+SERVE USING EXPRESS
+
+```bash
+# serve to localhost
+node server.js
+```
+
 PACKAGE SETUP FOR BABEL
 
 ```json
@@ -93,7 +107,7 @@ PACKAGE SETUP FOR BABEL
     "@webcomponents/webcomponentsjs": "^2.2.1",
     "lit-html": "^0.14.0",
     "reflect-constructor": "^1.0.0",
-    "custom-web-component": "^1.0.0",
+    "custom-web-component": "^1.0.0"
   },
   "babel": {
     "plugins": [

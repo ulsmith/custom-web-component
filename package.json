@@ -1,6 +1,6 @@
 {
   "name": "custom-web-component",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Simple bases for creating standard custom web components with one little HTML rendering library, lit-html(render, html)",
   "author": "Paul Smith (smiffy6969)",
