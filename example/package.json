@@ -1,0 +1,55 @@
+{
+  "version": "0.0.1",
+  "name": "raz",
+  "description": "raz",
+  "licence": "MIT",
+  "author": "Paul Smith (ulsmith)",
+  "dependencies": {
+    "@webcomponents/custom-elements": "^1.2.1",
+    "@webcomponents/webcomponentsjs": "^2.2.1",
+    "lit-html": "^0.14.0",
+    "reflect-constructor": "^1.0.0"
+  },
+  "babel": {
+    "plugins": [
+      "transform-custom-element-classes",
+      "transform-es2015-classes"
+    ],
+    "presets": [
+      "latest"
+    ]
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "plugins": [
+            "transform-custom-element-classes",
+            "transform-es2015-classes"
+          ],
+          "presets": [
+            "latest"
+          ]
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-custom-element-classes": "^0.1.0",
+    "babel-plugin-transform-es2015-classes": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2015-loose": "^7.0.0",
+    "babel-preset-latest": "^6.24.1",
+    "babelify": "^7.3.0",
+    "express": "^4.16.4",
+    "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
+    "gulp-rename": "^1.4.0",
+    "gulp-sourcemaps": "^1.12.1",
+    "gulp-uglify": "^1.5.4",
+    "gulp-util": "^3.0.8",
+    "gulp-watch": "^4.3.11"
+  }
+}
