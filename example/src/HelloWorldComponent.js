@@ -29,6 +29,7 @@ class HelloWorldComponent extends CustomHTMLElement {
                     <br/>
                     <br/>
                     <slot name="footer">World</slot>
+                    <button>Boo</button>
                 </p>
             </div>
         `;
@@ -86,7 +87,7 @@ class HelloWorldComponent extends CustomHTMLElement {
      * @param {*} newValue The new value after the change
      */
     propertyChanged(property, oldValue, newValue) {
-        console.log('propertyChanged', property, oldValue, newValue);
+        console.log(this.tagName, 'propertyChanged', property, oldValue, newValue);
     }
     
     /**
@@ -97,18 +98,20 @@ class HelloWorldComponent extends CustomHTMLElement {
      * @param {*} newValue The new value after the change
      */
     attributeChanged(attribute, oldValue, newValue) {
-        console.log('attributeChanged', attribute, oldValue, newValue);
+        console.log(this.tagName, 'attributeChanged', attribute, oldValue, newValue);
 
         if (attribute === 'bar') this.bar = newValue;
 
-        this.update();
+        this.updateTemplate();
     }
 
     /**
      * @public update() [parent class]
      * Update the view, pushing only changes for update in shadow DOM
      */
-    // update()
+    templateUpdated() {
+        console.log(this.tagName, 'updated');
+    }
 }
 
 customElements.define('hello-world-component', HelloWorldComponent);
