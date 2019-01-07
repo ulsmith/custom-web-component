@@ -43,54 +43,19 @@ npm install reflect-constructor lit-html custom-web-component --save
 
 COMPILATION
 
-```js
-// using gulp file
-var gulp = require('gulp');
-var rename = require("gulp-rename");
-var browserify = require('gulp-browserify');
-var uglify = require('gulp-uglify');
-var util = require('gulp-util');
-
-/**************************************************/
-/* Build into distributable, development versions */
-/**************************************************/
-
-gulp.task('build', ['build-js']);
-
-gulp.task('build-js', function() {
-	gulp.src('./index.mjs')
-		.pipe(browserify({transform: ['babelify']}))
-		.on('error', function(err) { console.log(err); util.beep(); this.emit('end'); })
-		.pipe(rename('index.js'))
-		.pipe(gulp.dest('./build/'))
-		.pipe(rename('index.min.js'))
-		.pipe(uglify())
-		.pipe(gulp.dest('./build/'));
-});
-
-/********************************************/
-/* Build then Watch for changes and rebuild */
-/********************************************/
-
-gulp.task('watch', ['build'], function() {
-	gulp.watch([
-		'./src/**/*.*'
-	], ['build-js']);
-});
-```
-
-COMPILE WITH BABEL
-
 ```bash
-# from example folder or project root
-gulp build
+npm run build
 ```
+
+Will run the build.js script
 
 SERVE USING EXPRESS
 
 ```bash
 # serve to localhost
-node server.js
+npm run serve
+# run build
+npm run serve build
 ```
 
 PACKAGE SETUP FOR BABEL
@@ -98,16 +63,35 @@ PACKAGE SETUP FOR BABEL
 ```json
 {
   "version": "0.0.1",
-  "name": "...",
-  "description": "...",
-  "license": "...",
-  "author": "...",
+  "name": "cwc",
+  "description": "cwc",
+  "licence": "MIT",
+  "author": "Paul Smith (ulsmith)",
+  "scripts": {
+    "start": "node server.js",
+    "serve": "node server.js",
+    "build": "node build.js"
+  },
   "dependencies": {
     "@webcomponents/custom-elements": "^1.2.1",
     "@webcomponents/webcomponentsjs": "^2.2.1",
+    "custom-web-component": "^1.0.0",
     "lit-html": "^0.14.0",
-    "reflect-constructor": "^1.0.0",
-    "custom-web-component": "^1.0.0"
+    "reflect-constructor": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-custom-element-classes": "^0.1.0",
+    "babel-plugin-transform-es2015-classes": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2015-loose": "^7.0.0",
+    "babel-preset-es2016": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
+    "babelify": "^7.3.0",
+    "browserify": "^16.2.3",
+    "express": "^4.16.4",
+    "fs-extra": "^7.0.1",
+    "replace-in-file": "^3.4.2"
   },
   "babel": {
     "plugins": [
@@ -133,23 +117,6 @@ PACKAGE SETUP FOR BABEL
         }
       ]
     ]
-  },
-  "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-custom-element-classes": "^0.1.0",
-    "babel-plugin-transform-es2015-classes": "^6.24.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-es2015-loose": "^7.0.0",
-    "babel-preset-latest": "^6.24.1",
-    "babelify": "^7.3.0",
-    "express": "^4.16.4",
-    "gulp": "^3.9.1",
-    "gulp-browserify": "^0.5.1",
-    "gulp-rename": "^1.4.0",
-    "gulp-sourcemaps": "^1.12.1",
-    "gulp-uglify": "^1.5.4",
-    "gulp-util": "^3.0.8",
-    "gulp-watch": "^4.3.11"
   }
 }
 ```
@@ -173,22 +140,25 @@ class HelloWorldComponent extends CustomHTMLElement {
      */
     template() {
         return html`
-            <style>
-                p { display: block; border: 2px solid red; padding: 20px; color: red; }
-            </style>
+            <div id="hello-world-component">
+                <style>
+                    /* Encapsulate all CSS for IE11 support */
+                    #hello-world-component p { display: block; border: 2px solid red; padding: 20px; color: red; }
+                </style>
 
-            <div>
-                <p>
-                    <slot name="main">Hello</slot>
-                    <br/>
-                    <br/>
-                    <strong>FOO:</strong> ${this.foo}
-                    <br/>
-                    <strong>BAR:</strong> ${this.bar}
-                    <br/>
-                    <br/>
-                    <slot name="footer">World</slot>
-                </p>
+                <div>
+                    <p>
+                        <slot name="main">Hello</slot>
+                        <br/>
+                        <br/>
+                        <strong>FOO:</strong> ${this.foo}
+                        <br/>
+                        <strong>BAR:</strong> ${this.bar}
+                        <br/>
+                        <br/>
+                        <slot name="footer">World</slot>
+                    </p>
+                </div>
             </div>
         `;
     }
@@ -261,6 +231,11 @@ class HelloWorldComponent extends CustomHTMLElement {
         if (attribute === 'bar') this.bar = newValue;
 
         this.update();
+    }
+
+    updatedTemplate() {
+        // this.dom will return you the <div id="hello-world-component"></div> element instance of this specific instance of the web component 
+        console.log('Template has been updated via this.update()');
     }
 
     /**

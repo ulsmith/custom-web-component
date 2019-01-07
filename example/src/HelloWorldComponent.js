@@ -14,23 +14,26 @@ class HelloWorldComponent extends CustomHTMLElement {
      */
     template() {
         return html`
-            <style>
-                p { display: block; border: 2px solid red; padding: 20px; color: red; }
-            </style>
+            <div id="hello-world-component">
+                <style>
+                    /* Encapsulate all style to containing element for IE11 support */
+                    #hello-world-component p { display: block; border: 2px solid red; padding: 20px; color: red; }
+                </style>
 
-            <div>
-                <p>
-                    <slot name="main">Hello</slot>
-                    <br/>
-                    <br/>
-                    <strong>FOO:</strong> ${this.foo}
-                    <br/>
-                    <strong>BAR:</strong> ${this.bar}
-                    <br/>
-                    <br/>
-                    <slot name="footer">World</slot>
-                    <button>Boo</button>
-                </p>
+                <div>
+                    <p>
+                        <slot name="main">Hello</slot>
+                        <br/>
+                        <br/>
+                        <strong>FOO:</strong> ${this.foo}
+                        <br/>
+                        <strong>BAR:</strong> ${this.bar}
+                        <br/>
+                        <br/>
+                        <slot name="footer">World</slot>
+                        <button>Boo</button>
+                    </p>
+                </div>
             </div>
         `;
     }
@@ -110,7 +113,8 @@ class HelloWorldComponent extends CustomHTMLElement {
      * Update the view, pushing only changes for update in shadow DOM
      */
     templateUpdated() {
-        console.log(this.tagName, 'updated');
+        // this.dom will return you the <div id="hello-world-component"></div> element instance of this specific instance of the web component 
+        console.log(this.dom, this.tagName, 'updated');
     }
 }
 

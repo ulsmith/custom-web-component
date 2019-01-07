@@ -68,6 +68,9 @@ export default class CustomWebComponent {
 	static updateTemplate() {
 		if (!this.isConnected) return;
 		render(this.template(), this.shadowRoot ? this.shadowRoot : this.attachShadow({ mode: 'open' }));
+
+		this.dom = this.shadowRoot ? this.shadowRoot.getElementById(this.tagName.toLowerCase()) : this.getElementById(this.tagName.toLowerCase());
+		
 		if (typeof this.templateUpdated === 'function') this.templateUpdated.call(this);
 		this.dispatchEvent(new CustomEvent('templateupdated'));
 	}
