@@ -53,7 +53,7 @@ export default class CustomWebComponent {
 				set: function (value) {
 					let oldValue = this.__properties[this.constructor.observedProperties[idx]];
 					this.__properties[this.constructor.observedProperties[idx]] = value;
-					if (typeof this.propertyChanged === 'function') this.propertyChanged.call(this, this.constructor.observedProperties[idx], value);
+					if (typeof this.propertyChanged === 'function') this.propertyChanged.call(this, this.constructor.observedProperties[idx], oldValue, value);
 					this.dispatchEvent(new CustomEvent('propertychanged', { 'detail': { 'property': this.constructor.observedProperties[idx], 'oldValue': oldValue, 'newValue': value } }));
 				}
 			});

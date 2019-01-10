@@ -1,6 +1,10 @@
 Custom Web Component
 =======================
 
+# 1.0.6
+
+Missing oldValue from propertyChanged callback added
+
 # 1.0.5
 
 If you wrap your whole template in a html element and give it the id of the component name as you would use it in your html 'my-custom-element', this will be automatically resolved to this.dom inside the component once rendered and before call to this.templateUpdated.
