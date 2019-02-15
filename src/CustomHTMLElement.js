@@ -13,17 +13,21 @@ export default class CustomHTMLElement extends HTMLElement {
 	 */
 	constructor() {
 		super();
-
-		CustomWebComponent.bindProperties.call(this);	
+		this.updateTimeout;
+		CustomWebComponent.bindProperties.call(this);
 	}
-	
+
 	/**
 	 * default methods inherited from Custom Web Component
 	 * connectedCallback(), disconnectedCallback(), attributeChangedCallback(), updateTemplate()...
 	 * Bootstrap static methods for default custom web functionality
 	 */
-	connectedCallback() { CustomWebComponent.connectedCallback.call(this) }	
-	disconnectedCallback() { CustomWebComponent.disconnectedCallback.call(this) }	
-	attributeChangedCallback(property, oldValue, newValue) { CustomWebComponent.attributeChangedCallback.call(this, property, oldValue, newValue) }	
-	updateTemplate() { CustomWebComponent.updateTemplate.call(this) }
+	connectedCallback() { CustomWebComponent.connectedCallback.call(this) }
+	disconnectedCallback() { CustomWebComponent.disconnectedCallback.call(this) }
+	attributeChangedCallback(property, oldValue, newValue) { CustomWebComponent.attributeChangedCallback.call(this, property, oldValue, newValue) }
+	updateTemplate() {
+		// debounce updates
+		clearTimeout(this.updateTimeout);
+		this.updateTimeout = setTimeout(() => CustomWebComponent.updateTemplate.call(this), 1);
+	}
 }
