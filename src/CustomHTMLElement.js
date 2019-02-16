@@ -7,7 +7,7 @@ import CustomWebComponent from './CustomWebComponent.js';
  * Extend this class to create a simple HTML Custome Element
  */
 export default class CustomHTMLElement extends HTMLElement {
-    /**
+    	/**
 	 * constructor()
 	 * Create a simple HTML element and observe changes to properties
 	 */
@@ -25,9 +25,14 @@ export default class CustomHTMLElement extends HTMLElement {
 	connectedCallback() { CustomWebComponent.connectedCallback.call(this) }
 	disconnectedCallback() { CustomWebComponent.disconnectedCallback.call(this) }
 	attributeChangedCallback(property, oldValue, newValue) { CustomWebComponent.attributeChangedCallback.call(this, property, oldValue, newValue) }
+	
 	updateTemplate() {
 		// debounce updates
 		clearTimeout(this.updateTimeout);
 		this.updateTimeout = setTimeout(() => CustomWebComponent.updateTemplate.call(this), 1);
+	}
+
+	host(options) {
+		return !window.ShadyCSS ? (':host' + (options ? `(${options})` : '')) : this.localName + (options ? `${options}` : '');
 	}
 }
