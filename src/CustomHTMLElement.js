@@ -35,4 +35,8 @@ export default class CustomHTMLElement extends HTMLElement {
 	host(options) {
 		return !window.ShadyCSS ? (':host' + (options ? `(${options})` : '')) : this.localName + (options ? `${options}` : '');
 	}
+
+	dom() {
+		return this.shadowRoot ? this.shadowRoot.getElementById(this.tagName.toLowerCase()) : this.getElementById(this.tagName.toLowerCase());
+	}
 }

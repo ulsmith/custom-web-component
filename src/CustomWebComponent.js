@@ -14,8 +14,8 @@ export default class CustomWebComponent {
 	 */
 	static connectedCallback() {
 		if (!this.isConnected) return;
+		if (typeof this.template === 'function') CustomWebComponent.updateTemplate.call(this);
 		if (typeof this.connected === 'function') this.connected.call(this);
-		if (typeof this.updateTemplate === 'function') CustomWebComponent.updateTemplate.call(this);
 	}
 
 	/**
@@ -53,8 +53,7 @@ export default class CustomWebComponent {
 				set: function (value) {
 					let oldValue = this.__properties[this.constructor.observedProperties[idx]];
 					this.__properties[this.constructor.observedProperties[idx]] = value;
-					if (typeof this.propertyChanged === 'function') this.propertyChanged.call(this, this.constructor.observedProperties[idx], oldValue, value);
-					this.dispatchEvent(new CustomEvent('propertychanged', { 'detail': { 'property': this.constructor.observedProperties[idx], 'oldValue': oldValue, 'newValue': value } }));
+					if (this.isConnected && typeof this.propertyChanged === 'function') this.propertyChanged.call(this, this.constructor.observedProperties[idx], oldValue, value);
 				}
 			});
 		}
@@ -69,9 +68,6 @@ export default class CustomWebComponent {
 		if (!this.isConnected) return;
 		render(this.template(), this.shadowRoot ? this.shadowRoot : this.attachShadow({ mode: 'open' }));
 
-		this.dom = this.shadowRoot ? this.shadowRoot.getElementById(this.tagName.toLowerCase()) : this.getElementById(this.tagName.toLowerCase());
-		
 		if (typeof this.templateUpdated === 'function') this.templateUpdated.call(this);
-		this.dispatchEvent(new CustomEvent('templateupdated'));
 	}
 }
