@@ -24,8 +24,8 @@ export default class CustomHTMLElement extends HTMLElement {
 	 */
 	connectedCallback() { CustomWebComponent.connectedCallback.call(this) }
 	disconnectedCallback() { CustomWebComponent.disconnectedCallback.call(this) }
-	attributeChangedCallback(property, oldValue, newValue) { CustomWebComponent.attributeChangedCallback.call(this, property, oldValue, newValue) }
-	
+	attributeChangedCallback(property, oldValue, newValue) { if (oldValue !== newValue) CustomWebComponent.attributeChangedCallback.call(this, property, oldValue, newValue) }
+
 	updateTemplate() {
 		// debounce updates
 		clearTimeout(this.updateTimeout);
@@ -37,6 +37,6 @@ export default class CustomHTMLElement extends HTMLElement {
 	}
 
 	dom() {
-		return this.shadowRoot ? this.shadowRoot.getElementById(this.tagName.toLowerCase()) : this.getElementById(this.tagName.toLowerCase());
+		return this.shadowRoot ? this.shadowRoot : this;
 	}
 }
