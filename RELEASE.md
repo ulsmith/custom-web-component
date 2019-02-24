@@ -1,6 +1,14 @@
 Custom Web Component
 =======================
 
+# 1.1.1
+
+Add the rest of lit-html through the CWC export, such as repeat and unsafeHTML directives
+
+# 1.1.0
+
+Major changes to lifecyle to ensure property and attribute callbacks not fired unless a change is detected as well as not firing until dom rendered at least once.
+
 # 1.0.6
 
 Missing oldValue from propertyChanged callback added
