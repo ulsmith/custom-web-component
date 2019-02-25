@@ -1,4 +1,7 @@
-import { render } from '../../lit-html/lit-html.js';
+// native shadow dom
+// import { render } from '../../lit-html/lit-html.js';
+// shady dom support
+import { render } from '../../lit-html/lib/shady-render.js';
 
 /**
  * CustomHTMLElement
@@ -17,6 +20,9 @@ export default class CustomWebComponent {
         if (!!this.template) throw 'Ensure template is a static function for ' + this.localName;
 		if (typeof this.constructor.template === 'function') CustomWebComponent.updateTemplate.call(this);
 		if (typeof this.connected === 'function') this.connected.call(this);
+
+		// shadyCSS support
+		if (window.shadyCSS !== undefined) window.shadyCSS.styleElement(this);
 	}
 
 	/**
@@ -67,7 +73,8 @@ export default class CustomWebComponent {
 	 */
 	static updateTemplate() {
 		if (!this.isConnected) return;
-		render(this.constructor.template.call(this), this.shadowRoot ? this.shadowRoot : this.attachShadow({ mode: 'open' }));
+
+		render(this.constructor.template.call(this), this.shadowRoot ? this.shadowRoot : this.attachShadow({ mode: 'open' }), { scopeName: this.tagName.toLowerCase() });
 
 		if (typeof this.templateUpdated === 'function') this.templateUpdated.call(this);
 	}

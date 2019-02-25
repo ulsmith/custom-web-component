@@ -31,12 +31,4 @@ export default class CustomHTMLElement extends HTMLElement {
 		clearTimeout(this.updateTimeout);
 		this.updateTimeout = setTimeout(() => CustomWebComponent.updateTemplate.call(this), 1);
 	}
-
-	host(options) {
-		return !window.ShadyCSS ? (':host' + (options ? `(${options})` : '')) : this.localName + (options ? `${options}` : '');
-	}
-
-	dom() {
-		return this.shadowRoot ? this.shadowRoot : this;
-	}
 }

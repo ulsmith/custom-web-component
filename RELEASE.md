@@ -1,6 +1,10 @@
 Custom Web Component
 =======================
 
+# 1.2.0
+
+Shady dom not being used to render non shadow dom browser and shadyCSS support not run, updated these and removed this.dom() use this.shadowRoot and this.host() use :host for both polyfilled and non polyfilled browser
+
 # 1.1.1
 
 Add the rest of lit-html through the CWC export, such as repeat and unsafeHTML directives
