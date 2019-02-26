@@ -23,8 +23,10 @@ PRODUCTION THROUGH BUILDS (compiled with babel)
 ```html
     <!-- Polyfill missing methods -->
     <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-    <!-- Production project entrypoint -->
-    <script src="./build/index.js"></script>
+    <!-- Native project entrypoint -->
+    <script type="module" src="./index.mjs"></script>
+    <!-- Backup compiled endpoint for browsers that lack module loading -->
+    <script nomodule src="./index.js"></script>
 ```
 
 YOUR ENTRY POINT
@@ -41,7 +43,7 @@ INSTALLATION
 npm install reflect-constructor lit-html custom-web-component --save
 ```
 
-COMPILATION
+COMPILATION (to build the index.js fall back using build.js)
 
 ```bash
 npm run build
@@ -54,8 +56,6 @@ SERVE USING EXPRESS
 ```bash
 # serve to localhost
 npm run serve
-# run build
-npm run serve build
 ```
 
 PACKAGE SETUP FOR BABEL
@@ -75,7 +75,7 @@ PACKAGE SETUP FOR BABEL
   "dependencies": {
     "@webcomponents/custom-elements": "^1.2.1",
     "@webcomponents/webcomponentsjs": "^2.2.1",
-    "custom-web-component": "^1.0.0",
+    "custom-web-component": "^1.2.0",
     "lit-html": "^0.14.0",
     "reflect-constructor": "^1.0.0"
   },
@@ -116,6 +116,11 @@ PACKAGE SETUP FOR BABEL
           ]
         }
       ]
+
+    updatedTemplate() {
+        // this.dom will return you the <div id="hello-world-component"></div> element instance of this specific instance of the web component 
+        console.log('Template has been updated via this.update()');
+    }
     ]
   }
 }
@@ -134,11 +139,25 @@ import { CustomHTMLElement, html } from "./node_modules/custom-web-component/ind
 class HelloWorldComponent extends CustomHTMLElement {
     
     /**
+     * @public constructor()
+     * Invoked when instantiation of class happens
+     * NOTE: Call super() first!
+     * NOTE: Declare local properties here... [this.__private, this._protected, this.public] 
+     * NOTE: Declarations and kick starts only... no business logic here!
+     */
+    constructor() {
+        super();
+
+        this.foo = 'FOO!!';
+        this.bar;
+    }
+    
+    /**
      * template()
      * Return html TemplateResolver a list of observed properties, that will call propertyChanged() when mutated
      * @return {TemplateResult} Returns a HTML TemplateResult to be used for the basis of the elements DOM structure 
      */
-    template() {
+    static template() {
         return html`
             <div id="hello-world-component">
                 <style>
@@ -171,6 +190,19 @@ class HelloWorldComponent extends CustomHTMLElement {
     static get observedProperties() { return ['foo', 'bar']; }
 
     /**
+     * @public propertyChanged()
+     * Invoked when an observed instantiated property has changed
+     * @param {String} property The name of the property that changed 
+     * @param {*} oldValue The old value before hte change 
+     * @param {*} newValue The new value after the change
+     */
+    propertyChanged(property, oldValue, newValue) {
+        console.log('propertyChanged', property, oldValue, newValue);
+
+        this.updateTemplate();
+    }
+
+    /**
      * @static @get observedAttributes()
      * Return a list of observed attributes, that will call attributeChanged() when mutated
      * @return {Array} List of attributes that will promote the callback to be called on mutation 
@@ -178,17 +210,18 @@ class HelloWorldComponent extends CustomHTMLElement {
     static get observedAttributes() { return ['bar']; }
     
     /**
-     * @public constructor()
-     * Invoked when instantiation of class happens
-     * NOTE: Call super() first!
-     * NOTE: Declare local properties here... [this.__private, this._protected, this.public] 
-     * NOTE: Declarations and kick starts only... no business logic here!
+     * @public attributeChanged()
+     * Invoked when an observed node attribute has changed
+     * @param {String} attribute The name of the attribute that changed 
+     * @param {*} oldValue The old value before hte change 
+     * @param {*} newValue The new value after the change
      */
-    constructor() {
-        super();
+    attributeChanged(attribute, oldValue, newValue) {
+        console.log('attributeChanged', attribute, oldValue, newValue);
 
-        this.foo = 'FOO!!';
-        this.bar;
+        if (attribute === 'bar') this.bar = newValue;
+
+        this.updateTemplate();
     }
 
     /**
@@ -207,42 +240,10 @@ class HelloWorldComponent extends CustomHTMLElement {
         console.log('disconnected');
     }
 
-    /**
-     * @public propertyChanged()
-     * Invoked when an observed instantiated property has changed
-     * @param {String} property The name of the property that changed 
-     * @param {*} oldValue The old value before hte change 
-     * @param {*} newValue The new value after the change
-     */
-    propertyChanged(property, oldValue, newValue) {
-        console.log('propertyChanged', property, oldValue, newValue);
-    }
-    
-    /**
-     * @public attributeChanged()
-     * Invoked when an observed node attribute has changed
-     * @param {String} attribute The name of the attribute that changed 
-     * @param {*} oldValue The old value before hte change 
-     * @param {*} newValue The new value after the change
-     */
-    attributeChanged(attribute, oldValue, newValue) {
-        console.log('attributeChanged', attribute, oldValue, newValue);
-
-        if (attribute === 'bar') this.bar = newValue;
-
-        this.update();
-    }
-
-    updatedTemplate() {
+    templateUpdated() {
         // this.dom will return you the <div id="hello-world-component"></div> element instance of this specific instance of the web component 
         console.log('Template has been updated via this.update()');
     }
-
-    /**
-     * @public update() [parent class]
-     * Update the view, pushing only changes for update in shadow DOM
-     */
-    // update()
 }
 
 customElements.define('hello-world-component', HelloWorldComponent);

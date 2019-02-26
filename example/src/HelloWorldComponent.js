@@ -6,13 +6,27 @@ import { CustomHTMLElement, html } from "../node_modules/custom-web-component/in
  * Build on Web Standards and polyfilled for legacy browsers, using a simple clean lite HTML template rendering called lit-html
  */
 class HelloWorldComponent extends CustomHTMLElement {
+
+    /**
+     * @public constructor()
+     * Invoked when instantiation of class happens
+     * NOTE: Call super() first!
+     * NOTE: Declare local properties here... [this.__private, this._protected, this.public] 
+     * NOTE: Declarations and kick starts only... no business logic here!
+     */
+	constructor() {
+		super();
+
+		this.foo = 'FOO!!';
+		this.bar;
+	}
     
     /**
      * template()
      * Return html TemplateResolver a list of observed properties, that will call propertyChanged() when mutated
      * @return {TemplateResult} Returns a HTML TemplateResult to be used for the basis of the elements DOM structure 
      */
-    template() {
+    static template() {
         return html`
             <div id="hello-world-component">
                 <style>
@@ -31,7 +45,7 @@ class HelloWorldComponent extends CustomHTMLElement {
                         <br/>
                         <br/>
                         <slot name="footer">World</slot>
-                        <button>Boo</button>
+                        <button @click="${this._clicked.bind(this, 'something')}">Boo</button>
                     </p>
                 </div>
             </div>
@@ -43,28 +57,42 @@ class HelloWorldComponent extends CustomHTMLElement {
      * Return a list of observed properties, that will call propertyChanged() when mutated
      * @return {Array} List of properties that will promote the callback to be called on mutation 
      */
-    static get observedProperties() { return ['foo', 'bar']; }
+	static get observedProperties() { return ['foo', 'bar']; }
+
+    /**
+     * @public propertyChanged()
+     * Invoked when an observed instantiated property has changed
+     * @param {String} property The name of the property that changed 
+     * @param {*} oldValue The old value before hte change 
+     * @param {*} newValue The new value after the change
+     */
+	propertyChanged(property, oldValue, newValue) {
+		console.log(this.tagName, 'propertyChanged', property, oldValue, newValue);
+
+		this.updateTemplate();
+	}
 
     /**
      * @static @get observedAttributes()
      * Return a list of observed attributes, that will call attributeChanged() when mutated
      * @return {Array} List of attributes that will promote the callback to be called on mutation 
      */
-    static get observedAttributes() { return ['bar']; }
-    
-    /**
-     * @public constructor()
-     * Invoked when instantiation of class happens
-     * NOTE: Call super() first!
-     * NOTE: Declare local properties here... [this.__private, this._protected, this.public] 
-     * NOTE: Declarations and kick starts only... no business logic here!
-     */
-    constructor() {
-        super();
+	static get observedAttributes() { return ['bar']; }
 
-        this.foo = 'FOO!!';
-        this.bar;
-    }
+    /**
+     * @public attributeChanged()
+     * Invoked when an observed node attribute has changed
+     * @param {String} attribute The name of the attribute that changed 
+     * @param {*} oldValue The old value before hte change 
+     * @param {*} newValue The new value after the change
+     */
+	attributeChanged(attribute, oldValue, newValue) {
+		console.log(this.tagName, 'attributeChanged', attribute, oldValue, newValue);
+
+		if (attribute === 'bar') this.bar = newValue;
+
+		this.updateTemplate();
+	}
 
     /**
      * @public connected()
@@ -83,39 +111,16 @@ class HelloWorldComponent extends CustomHTMLElement {
     }
 
     /**
-     * @public propertyChanged()
-     * Invoked when an observed instantiated property has changed
-     * @param {String} property The name of the property that changed 
-     * @param {*} oldValue The old value before hte change 
-     * @param {*} newValue The new value after the change
-     */
-    propertyChanged(property, oldValue, newValue) {
-        console.log(this.tagName, 'propertyChanged', property, oldValue, newValue);
-    }
-    
-    /**
-     * @public attributeChanged()
-     * Invoked when an observed node attribute has changed
-     * @param {String} attribute The name of the attribute that changed 
-     * @param {*} oldValue The old value before hte change 
-     * @param {*} newValue The new value after the change
-     */
-    attributeChanged(attribute, oldValue, newValue) {
-        console.log(this.tagName, 'attributeChanged', attribute, oldValue, newValue);
-
-        if (attribute === 'bar') this.bar = newValue;
-
-        this.updateTemplate();
-    }
-
-    /**
      * @public update() [parent class]
      * Update the view, pushing only changes for update in shadow DOM
      */
     templateUpdated() {
-        // this.dom will return you the <div id="hello-world-component"></div> element instance of this specific instance of the web component 
-        console.log(this.dom, this.tagName, 'updated');
-    }
+        console.log(this.shadowRoot, this.tagName, 'updated');
+	}
+	
+	_clicked(text, ev) {
+		alert(text);
+	}
 }
 
 customElements.define('hello-world-component', HelloWorldComponent);
