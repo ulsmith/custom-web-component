@@ -1,11 +1,11 @@
 Custom Web Component
-=======================
+====================
 
 Forget angular, forget react, forget vue, lets start building raw custom web components!
 
 Support down to IE11 with reflect-component polyfill, this class extends CustomHTMLElement (more to follow) to build a new HTML element based on the most basic.
 
-using lit-html (render, html) to offer super simple html templating and targetted updates to the dom with this.update()
+using lit-html (render, html), an optional templating binder to offer super simple html templating and targetted updates to the dom with this.updateTemplate(), or simple embed your own raw HTML, your choice.
 
 Look in the example folder for some basic concepts and use case, more docs to follow
 
@@ -29,6 +29,8 @@ PRODUCTION THROUGH BUILDS (compiled with babel)
     <script nomodule src="./index.js"></script>
 ```
 
+The above will give you modular JS loading for those browsers that support it and fallback to compiled build using babel should you wish to support IE11
+
 YOUR ENTRY POINT
 
 ```js
@@ -43,9 +45,60 @@ INSTALLATION
 npm install reflect-constructor lit-html custom-web-component --save
 ```
 
+BUILDING
+
+```js
+// Typical Build script
+var fs = require('fs');
+var fsx = require('fs-extra');
+var replace = require('replace-in-file');
+var browserify = require("browserify");
+var babelify = require("babelify");
+
+/*************************************************/
+/* Build into distributable, production versions */
+/*************************************************/
+
+// CUSTOM WEB COMPONENT -- BUILD //
+console.log('--------------------------------');
+console.log('- Custom Web Component - BUILD -');
+console.log('--------------------------------');
+console.log('');
+
+// clean up build
+console.log('Cleaned Build...');
+fsx.remove('./index.js')
+.then(() => console.log('Cleaned Build DONE'))
+.catch((error) => console.log('Cleaned Build FAILED...', error))
+
+// build src into distributable
+.then(() => console.log('Create distributable logic...'))
+.then(() => new Promise((resolve, reject) => {
+	browserify({ debug: true })
+	.transform(babelify.configure({ extensions: [".mjs"] }))
+	.require("./index.mjs", { entry: true })
+	.bundle()
+	.on("error", (err) => reject("Browserify/Babelify compile error: " + err.message))
+	.pipe(fs.createWriteStream("./index.js"))
+	.on("finish", () => resolve());
+}))
+.then(() => console.log('Create distributable logic DONE'))
+.catch((error) => console.log('Create distributable logic FAILED', error))
+
+.then(() => {
+	console.log('');
+	console.log('-------');
+	console.log('- END -');
+	console.log('-------');
+	console.log('');
+});
+```
+
 COMPILATION (to build the index.js fall back using build.js)
 
 ```bash
+# example in example folder
+# build the IE11 fallback
 npm run build
 ```
 
@@ -54,7 +107,8 @@ Will run the build.js script
 SERVE USING EXPRESS
 
 ```bash
-# serve to localhost
+# example in example folder
+# serve to localhost:XXXX
 npm run serve
 ```
 
@@ -63,8 +117,8 @@ PACKAGE SETUP FOR BABEL
 ```json
 {
   "version": "0.0.1",
-  "name": "cwc",
-  "description": "cwc",
+  "name": "MyApp",
+  "description": "My Application",
   "licence": "MIT",
   "author": "Paul Smith (ulsmith)",
   "scripts": {
@@ -116,11 +170,6 @@ PACKAGE SETUP FOR BABEL
           ]
         }
       ]
-
-    updatedTemplate() {
-        // this.dom will return you the <div id="hello-world-component"></div> element instance of this specific instance of the web component 
-        console.log('Template has been updated via this.update()');
-    }
     ]
   }
 }
@@ -159,26 +208,25 @@ class HelloWorldComponent extends CustomHTMLElement {
      */
     static template() {
         return html`
-            <div id="hello-world-component">
-                <style>
-                    /* Encapsulate all CSS for IE11 support */
-                    #hello-world-component p { display: block; border: 2px solid red; padding: 20px; color: red; }
-                </style>
+            <style>
+                /* Style auto encapsulates in shadowDOM or shims for IE */
+				:host { display: block; }
+                #hello-world-component p { display: block; border: 2px solid red; padding: 20px; color: red; }
+            </style>
 
-                <div>
-                    <p>
-                        <slot name="main">Hello</slot>
-                        <br/>
-                        <br/>
-                        <strong>FOO:</strong> ${this.foo}
-                        <br/>
-                        <strong>BAR:</strong> ${this.bar}
-                        <br/>
-                        <br/>
-                        <slot name="footer">World</slot>
-                    </p>
-                </div>
-            </div>
+			<div>
+				<p>
+					<slot name="main">Hello</slot>
+					<br/>
+					<br/>
+					<strong>FOO:</strong> ${this.foo}
+					<br/>
+					<strong>BAR:</strong> ${this.bar}
+					<br/>
+					<br/>
+					<slot name="footer">World</slot>
+				</p>
+			</div>
         `;
     }
 
@@ -240,6 +288,10 @@ class HelloWorldComponent extends CustomHTMLElement {
         console.log('disconnected');
     }
 
+    /**
+     * @public templateUpdated()
+     * Invoked when the template is updated
+     */
     templateUpdated() {
         // this.dom will return you the <div id="hello-world-component"></div> element instance of this specific instance of the web component 
         console.log('Template has been updated via this.update()');
