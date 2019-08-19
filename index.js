@@ -10,7 +10,8 @@ import { guard } from '../lit-html/directives/guard.js';
 import { repeat } from '../lit-html/directives/repeat.js';
 import { styleMap } from '../lit-html/directives/style-map.js';
 import { unsafeHTML } from '../lit-html/directives/unsafe-html.js';
-import { until } from '../lit-html/directives/until.js';
+import { until } from '../lit-html/directives/until.js'; 
+import { render } from '../lit-html/lib/shady-render.js';
 
 export {
 	CustomHTMLElement as CustomHTMLElement,
@@ -24,5 +25,6 @@ export {
 	repeat,
 	styleMap,
 	unsafeHTML,
-	until
+	until,
+	render
 }

@@ -10,8 +10,12 @@
 
         <title>Custom HTML Element</title>
 
-        <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-        <script type="module" src="./index.mjs"></script>
+		<!-- Polyfill -->
+		<script src="/node_modules/promise-polyfill/dist/polyfill.min.js"></script>
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+        
+		<!-- Bootstrap App -->
+		<script type="module" src="./index.mjs"></script>
         <script nomodule src="./index.js"></script>
     </head>
     
