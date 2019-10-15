@@ -1,6 +1,11 @@
 Custom Web Component
 =======================
 
+# 1.2.4
+
+IOS < 11 seems to have issues with DOM lifecycle and setting of attributes pre construction. Not a good place to sniff attributes on host.
+Added a new life cycle hook called constructed() the place to put any set up of components, with contructer primarily used for registering properties.
+
 # 1.2.3
 
 Added in render to exported classes

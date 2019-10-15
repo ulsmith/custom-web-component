@@ -11,6 +11,15 @@ import { render } from '../../lit-html/lib/shady-render.js';
  */
 export default class CustomWebComponent {
 	/**
+	 * constructedCallback()
+	 * Catch the constructed callback, ensures new JS tick for issues with IOS < 11
+	 * follows up by bubbling the callback up to constructed() on child
+	 */
+	static constructedCallback() {
+		if (typeof this.constructed === 'function') this.constructed.call(this);
+	}
+	
+	/**
 	 * connectedCallback()
 	 * Catch the standard connected callback, rendering the template on instantiation
 	 * follows up by bubbling the callback up to connected() on child
