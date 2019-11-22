@@ -1,4 +1,21 @@
 import CustomHTMLElement from './src/CustomHTMLElement.js'
+import CustomHTMLAnchorElement from './src/CustomHTMLAnchorElement.js'
+import CustomHTMLBodyElement from './src/CustomHTMLBodyElement.js'
+import CustomHTMLHeadElement from './src/CustomHTMLHeadElement.js'
+import CustomHTMLButtonElement from './src/CustomHTMLButtonElement.js'
+import CustomHTMLCanvasElement from './src/CustomHTMLCanvasElement.js'
+import CustomHTMLDivElement from './src/CustomHTMLDivElement.js'
+import CustomHTMLFormElement from './src/CustomHTMLFormElement.js'
+import CustomHTMLHeadingElement from './src/CustomHTMLHeadingElement.js'
+import CustomHTMLIFrameElement from './src/CustomHTMLIFrameElement.js'
+import CustomHTMLImageElement from './src/CustomHTMLImageElement.js'
+import CustomHTMLInputElement from './src/CustomHTMLInputElement.js'
+import CustomHTMLLabelElement from './src/CustomHTMLLabelElement.js'
+import CustomHTMLParagraphElement from './src/CustomHTMLParagraphElement.js'
+import CustomHTMLSelectElement from './src/CustomHTMLSelectElement.js'
+import CustomHTMLSpanElement from './src/CustomHTMLSpanElement.js'
+import CustomHTMLTableElement from './src/CustomHTMLTableElement.js'
+import CustomHTMLTextAreaElement from './src/CustomHTMLTextAreaElement.js'
 
 import { html } from '../lit-html/lit-html.js';
 import { asyncReplace } from '../lit-html/directives/async-replace.js';
@@ -14,8 +31,26 @@ import { until } from '../lit-html/directives/until.js';
 import { render } from '../lit-html/lib/shady-render.js';
 
 export {
-	CustomHTMLElement as CustomHTMLElement,
-	html as html,
+	CustomHTMLElement,
+	CustomHTMLAnchorElement,
+	CustomHTMLBodyElement,
+	CustomHTMLHeadElement,
+	CustomHTMLButtonElement,
+	CustomHTMLCanvasElement,
+	CustomHTMLDivElement,
+	CustomHTMLFormElement,
+	CustomHTMLHeadingElement,
+	CustomHTMLIFrameElement,
+	CustomHTMLImageElement,
+	CustomHTMLInputElement,
+	CustomHTMLLabelElement,
+	CustomHTMLParagraphElement,
+	CustomHTMLSelectElement,
+	CustomHTMLSpanElement,
+	CustomHTMLTableElement,
+	CustomHTMLTextAreaElement,
+
+	html,
 	asyncReplace,
 	asyncAppend,
 	cache,
@@ -26,5 +61,5 @@ export {
 	styleMap,
 	unsafeHTML,
 	until,
-	render
+	render,
 }

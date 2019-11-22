@@ -1,6 +1,10 @@
 Custom Web Component
 =======================
 
+# 1.2.6
+
+Added customized built-in elements, allow extending of natural elements to go along with the autonomous element already in place. These work different, we extend them, we do not instantiate them, they also except no templates as they already have one.
+
 # 1.2.4
 
 IOS < 11 seems to have issues with DOM lifecycle and setting of attributes pre construction. Not a good place to sniff attributes on host.
