@@ -1,11 +1,15 @@
 {
   "name": "custom-web-component",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "license": "MIT",
   "description": "Simple basis for creating standard custom web components with one little HTML rendering library, lit-html(render, html) should you want to use it!",
   "author": "Paul Smith (ulsmith)",
   "url": "https://github.com/ulsmith/custom-web-component",
   "homepage": "https://custom-web-component.net",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ulsmith/custom-web-component"
+  },
   "dependencies": {
     "@webcomponents/custom-elements": "^1.2.1",
     "@webcomponents/shadycss": "^1.9.0",
