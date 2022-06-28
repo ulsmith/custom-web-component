@@ -1,6 +1,10 @@
 Custom Web Component
 =======================
 
+# 1.2.8
+
+Added aggrgated functions for attribute and property callbacks... you can now use attributesChanged and propertiesChanged for being informed when all attribute/property changes have taken place in this cycle. This has many advantages over property/attribute changed as it only fires once and only when all changes have happened. Please note this does not include hte value changed as many could have, it just informs you when all have changed for simpler update routines and reduced dom repaints 
+
 # 1.2.6
 
 Added customized built-in elements, allow extending of natural elements to go along with the autonomous element already in place. These work different, we extend them, we do not instantiate them, they also except no templates as they already have one.

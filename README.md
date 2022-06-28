@@ -249,6 +249,17 @@ class HelloWorldComponent extends CustomHTMLElement {
 
         this.updateTemplate();
     }
+    
+    /**
+     * @public propertiesChanged()
+     * Invoked when all property changes have taken place for this cycle
+     * @param {Array} properties The names of the observed properties
+     */
+    propertiesChanged(properties) {
+        console.log('propertiesChanged', properties);
+
+        this.updateTemplate();
+    }
 
     /**
      * @static @get observedAttributes()
@@ -268,6 +279,17 @@ class HelloWorldComponent extends CustomHTMLElement {
         console.log('attributeChanged', attribute, oldValue, newValue);
 
         if (attribute === 'bar') this.bar = newValue;
+
+        this.updateTemplate();
+    }
+    
+    /**
+     * @public attributesChanged()
+     * Invoked when all attribute changes have taken place for this cycle
+     * @param {Array} attributes The names of the observed attributes
+     */
+    attributesChanged(attributes) {
+        console.log('attributesChanged', attributes);
 
         this.updateTemplate();
     }

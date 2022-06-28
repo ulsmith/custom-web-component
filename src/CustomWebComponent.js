@@ -50,7 +50,14 @@ export default class CustomWebComponent {
 	 * follows up by bubbling the callback up to attributeChanged() on child for attributes subscribed too
 	 */
 	static attributeChangedCallback(attribute, oldValue, newValue) {
-		if (typeof this.attributeChanged === 'function') this.attributeChanged.call(this, attribute, oldValue, newValue);
+		if (typeof this.attributeChanged === 'function' && oldValue !== newValue) this.attributeChanged.call(this, attribute, oldValue, newValue);
+
+		if (typeof this.attributesChanged === 'function' && oldValue !== newValue) {
+			clearTimeout(this.constructor.observedAttributesChangedDebounce);
+			this.constructor.observedAttributesChangedDebounce = setTimeout(() => {
+				this.attributesChanged.call(this, this.constructor.observedAttributes);
+			}, 0)
+		}
 	}
 
 	/**
@@ -69,7 +76,18 @@ export default class CustomWebComponent {
 				set: function (value) {
 					let oldValue = this.__properties[this.constructor.observedProperties[idx]];
 					this.__properties[this.constructor.observedProperties[idx]] = value;
-					if (this.isConnected && typeof this.propertyChanged === 'function') if (oldValue !== value) this.propertyChanged.call(this, this.constructor.observedProperties[idx], oldValue, value);
+					
+					// single property changed
+					if (typeof this.propertyChanged === 'function' && oldValue !== value) this.propertyChanged.call(this, this.constructor.observedProperties[idx], oldValue, value);
+					
+					// all properties changed
+					if (typeof this.propertiesChanged === 'function' && oldValue !== value) {
+						this.constructor.observedPropertiesChangedDebounce = Promise.resolve().then(() => {
+							if (!this.constructor.observedPropertiesChangedDebounce) return;
+							this.constructor.observedPropertiesChangedDebounce = undefined;
+							this.propertiesChanged.call(this, this.constructor.observedProperties);
+						});
+					}
 				}
 			});
 		}
