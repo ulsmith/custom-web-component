@@ -53,8 +53,8 @@ export default class CustomWebComponent {
 		if (typeof this.attributeChanged === 'function' && oldValue !== newValue) this.attributeChanged.call(this, attribute, oldValue, newValue);
 
 		if (typeof this.attributesChanged === 'function' && oldValue !== newValue) {
-			clearTimeout(this.constructor.observedAttributesChangedDebounce);
-			this.constructor.observedAttributesChangedDebounce = setTimeout(() => {
+			clearTimeout(this.observedAttributesChangedDebounce);
+			this.observedAttributesChangedDebounce = setTimeout(() => {
 				this.attributesChanged.call(this, this.constructor.observedAttributes);
 			}, 0)
 		}
@@ -82,9 +82,9 @@ export default class CustomWebComponent {
 					
 					// all properties changed
 					if (typeof this.propertiesChanged === 'function' && oldValue !== value) {
-						this.constructor.observedPropertiesChangedDebounce = Promise.resolve().then(() => {
-							if (!this.constructor.observedPropertiesChangedDebounce) return;
-							this.constructor.observedPropertiesChangedDebounce = undefined;
+						this.observedPropertiesChangedDebounce = Promise.resolve().then(() => {
+							if (!this.observedPropertiesChangedDebounce) return;
+							this.observedPropertiesChangedDebounce = undefined;
 							this.propertiesChanged.call(this, this.constructor.observedProperties);
 						});
 					}
