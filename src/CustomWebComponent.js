@@ -1,7 +1,4 @@
-// native shadow dom
-// import { render } from '../../lit-html/lit-html.js';
-// shady dom support
-import { render } from '../../lit-html/lib/shady-render.js';
+import { render } from '../../lit-html/lit-html.js';
 
 /**
  * CustomHTMLElement

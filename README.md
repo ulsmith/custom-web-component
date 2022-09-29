@@ -3,8 +3,6 @@ Custom Web Component
 
 Forget angular, forget react, forget vue, lets start building raw custom web components!
 
-Support down to IE11 with reflect-component polyfill, this class extends CustomHTMLElement (more to follow) to build a new HTML element based on the most basic.
-
 using lit-html (render, html), an optional templating binder to offer super simple html templating and targetted updates to the dom with this.updateTemplate(), or simple embed your own raw HTML, your choice.
 
 Look in the example folder for some basic concepts and use case, more docs to follow

@@ -17,18 +17,27 @@ import CustomHTMLSpanElement from './src/CustomHTMLSpanElement.js'
 import CustomHTMLTableElement from './src/CustomHTMLTableElement.js'
 import CustomHTMLTextAreaElement from './src/CustomHTMLTextAreaElement.js'
 
-import { html } from '../lit-html/lit-html.js';
+import { html, render } from '../lit-html/lit-html.js';
 import { asyncReplace } from '../lit-html/directives/async-replace.js';
 import { asyncAppend } from '../lit-html/directives/async-append.js';
 import { cache } from '../lit-html/directives/cache.js';
+import { choose } from '../lit-html/directives/choose.js';
 import { classMap } from '../lit-html/directives/class-map.js';
 import { ifDefined } from '../lit-html/directives/if-defined.js';
 import { guard } from '../lit-html/directives/guard.js';
+import { join } from '../lit-html/directives/join.js';
+import { keyed } from '../lit-html/directives/keyed.js';
+import { live } from '../lit-html/directives/live.js';
+import { map } from '../lit-html/directives/map.js';
+import { Pauser, PseudoWeakRef, forAwaitOf } from '../lit-html/directives/private-async-helpers.js';
+import { range } from '../lit-html/directives/range.js';
+import { ref } from '../lit-html/directives/ref.js';
 import { repeat } from '../lit-html/directives/repeat.js';
 import { styleMap } from '../lit-html/directives/style-map.js';
+import { templateContent } from '../lit-html/directives/template-content.js';
 import { unsafeHTML } from '../lit-html/directives/unsafe-html.js';
 import { until } from '../lit-html/directives/until.js'; 
-import { render } from '../lit-html/lib/shady-render.js';
+import { when } from '../lit-html/directives/when.js'; 
 
 export {
 	CustomHTMLElement,
@@ -54,12 +63,24 @@ export {
 	asyncReplace,
 	asyncAppend,
 	cache,
+	choose,
 	classMap,
 	ifDefined,
 	guard,
+	join,
+	keyed,
+	live,
+	map,
+	Pauser, 
+	PseudoWeakRef, 
+	forAwaitOf,
+	range,
+	ref,
 	repeat,
 	styleMap,
+	templateContent,
 	unsafeHTML,
 	until,
-	render,
+	when,
+	render
 }

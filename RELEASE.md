@@ -1,6 +1,10 @@
 Custom Web Component
 =======================
 
+# 2.0.0
+
+Major upgrade of lit htm. Removed all polyfills no longer needed, patched in all new lit html features
+
 # 1.2.9
 
 Fixed bug with attribute and property changes being surpress when using hte same component more than once.
